@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:expense/types/chart_data.dart';
 import 'package:expense/types/transaction.dart';
 import "package:flutter/material.dart";
@@ -28,8 +30,6 @@ class Chart extends StatelessWidget {
     }).reversed.toList();
   }
 
-  //Right now, this is the sum of the spendings in the entire week.
-  //Try to make this the maximum value in a week instead.
   double get totalSpending {
     return groupedTransactionsValues.fold(
         0.0, (sum, item) => sum + item.amount);
@@ -43,6 +43,7 @@ class Chart extends StatelessWidget {
       child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: groupedTransactionsValues.map((obj) {
+            final dailySpendingAsPercentage = obj.amount / totalSpending;
             return Flexible(
               fit: FlexFit.tight,
               child: Padding(
@@ -51,7 +52,9 @@ class Chart extends StatelessWidget {
                     label: obj.day.substring(0, 2),
                     spendingAmount: obj.amount,
                     spendingAsPercentage:
-                        totalSpending > 0 ? obj.amount / totalSpending : 0),
+                        totalSpending > 0 && dailySpendingAsPercentage > 0
+                            ? max(0.1, dailySpendingAsPercentage)
+                            : 0),
               ),
             );
           }).toList()),

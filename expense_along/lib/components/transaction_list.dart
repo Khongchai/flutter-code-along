@@ -16,17 +16,21 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: userTransactions.isEmpty
-          ? Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              Text(
-                "No transactions added yet",
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              const SizedBox(height: 10),
-              SizedBox(
-                  height: 200,
-                  child: Image.asset("assets/images/waiting.png",
-                      fit: BoxFit.cover)),
-            ])
+          ? SingleChildScrollView(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "No transactions added yet",
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                        height: 200,
+                        child: Image.asset("assets/images/waiting.png",
+                            fit: BoxFit.cover)),
+                  ]),
+            )
           : ListView.builder(
               itemBuilder: (ctx, i) {
                 return Card(

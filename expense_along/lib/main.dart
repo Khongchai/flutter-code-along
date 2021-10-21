@@ -50,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
 */
   ];
 
+  bool _showChart = true;
   List<Transaction> get _recentTransactions {
     return _userTransactions
         .where((tx) =>
@@ -66,6 +67,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     setState(() {
       _userTransactions.add(newTx);
+
+      //For first load, show if in portrait mode.
+      _showChart = MediaQuery.of(context).orientation == Orientation.portrait;
     });
   }
 
@@ -95,15 +99,24 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () => startAddingNewTransaction(context))
       ]),
       body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        Chart(_recentTransactions),
+        if (_showChart) Chart(_recentTransactions),
         TransactionList(
           userTransactions: _userTransactions,
           removeItemFromList: removeItemFromList,
         ),
       ]),
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () => startAddingNewTransaction(context)),
+      floatingActionButton:
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        FloatingActionButton(
+            child: const Icon(Icons.add),
+            onPressed: () => startAddingNewTransaction(context)),
+        const SizedBox(
+          width: 20,
+        ),
+        FloatingActionButton(
+            child: const Icon(Icons.bar_chart),
+            onPressed: () => setState(() => _showChart = !_showChart))
+      ]),
     );
   }
 }

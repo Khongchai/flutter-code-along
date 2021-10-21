@@ -1,3 +1,5 @@
+import "dart:math";
+
 import "package:flutter/material.dart";
 
 class ChartBar extends StatelessWidget {
@@ -19,6 +21,8 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final barsHeight = max(MediaQuery.of(context).size.height * 0.1, 70.0);
+
     return Column(children: [
       SizedBox(
         height: 20,
@@ -28,7 +32,7 @@ class ChartBar extends StatelessWidget {
       ),
       const SizedBox(height: 4),
       SizedBox(
-        height: 60,
+        height: barsHeight,
         width: 10,
         child: Stack(children: [
           Container(
@@ -38,7 +42,7 @@ class ChartBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           )),
           SizedBox(
-            height: 60,
+            height: barsHeight,
             width: 10,
             child: FractionallySizedBox(
                 heightFactor: spendingAsPercentage,
