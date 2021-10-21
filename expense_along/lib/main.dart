@@ -3,6 +3,8 @@ import 'package:expense/components/transaction_list.dart';
 import 'package:expense/types/transaction.dart';
 import 'package:flutter/material.dart';
 
+import 'components/chart.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -40,24 +42,31 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
+/*
     Transaction(
         id: "t1", title: "New Shoes", amount: 69.99, date: DateTime.now()),
     Transaction(
         id: "t2", title: "New Dresses", amount: 29.99, date: DateTime.now()),
+*/
   ];
 
-  bool _addNewTransaction(String title, double amount) {
+  List<Transaction> get _recentTransactions {
+    return _userTransactions
+        .where((tx) =>
+            tx.date.isAfter(DateTime.now().subtract(const Duration(days: 7))))
+        .toList();
+  }
+
+  void _addNewTransaction(String title, double amount, DateTime selectedDate) {
     final newTx = Transaction(
         title: title,
         amount: amount,
-        date: DateTime.now(),
-        id: DateTime.now().toString());
+        date: selectedDate,
+        id: selectedDate.toString());
 
     setState(() {
       _userTransactions.add(newTx);
     });
-
-    return true;
   }
 
   void startAddingNewTransaction(BuildContext ctx) {
@@ -71,6 +80,12 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  void removeItemFromList(Transaction instanceToBeRemoved) {
+    setState(() {
+      _userTransactions.remove(instanceToBeRemoved);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,15 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () => startAddingNewTransaction(context))
       ]),
       body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        const SizedBox(
-          child: Card(
-            color: Colors.blue,
-            child: Text("chart"),
-            elevation: 5,
-          ),
-        ),
+        Chart(_recentTransactions),
         TransactionList(
           userTransactions: _userTransactions,
+          removeItemFromList: removeItemFromList,
         ),
       ]),
       floatingActionButton: FloatingActionButton(
