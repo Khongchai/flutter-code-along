@@ -28,13 +28,13 @@ class MyApp extends StatelessWidget {
               textTheme: ThemeData.light().textTheme.copyWith(
                   headline6:
                       const TextStyle(fontFamily: "OpenSans", fontSize: 20)))),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -76,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void startAddingNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
         context: ctx,
+        isScrollControlled: true,
         builder: (_) {
           return GestureDetector(
               onTap: () {},

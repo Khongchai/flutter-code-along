@@ -45,42 +45,48 @@ class _TransactionInputsState extends State<TransactionInputs> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-          TextField(
-              decoration: const InputDecoration(labelText: "Title"),
-              onSubmitted: (_) => _submitData(),
-              controller: _titleController),
-          TextField(
-            decoration: const InputDecoration(labelText: "Amount"),
-            onSubmitted: (_) => _submitData(),
-            controller: _amountController,
-            keyboardType: TextInputType.number,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text(_selectedDate == null
-                    ? "No Date Chosen!"
-                    : "Picked Date: " +
-                        DateFormat.yMd().format(_selectedDate as DateTime)),
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: 300 + MediaQuery.of(context).viewInsets.bottom,
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+              TextField(
+                  decoration: const InputDecoration(labelText: "Title"),
+                  onSubmitted: (_) => _submitData(),
+                  controller: _titleController),
+              TextField(
+                decoration: const InputDecoration(labelText: "Amount"),
+                onSubmitted: (_) => _submitData(),
+                controller: _amountController,
+                keyboardType: TextInputType.number,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(_selectedDate == null
+                        ? "No Date Chosen!"
+                        : "Picked Date: " +
+                            DateFormat.yMd().format(_selectedDate as DateTime)),
+                  ),
+                  TextButton(
+                    onPressed: _presentDatePicker,
+                    child: const Text("Choose Date"),
+                  ),
+                ],
               ),
               TextButton(
-                onPressed: _presentDatePicker,
-                child: const Text("Choose Date"),
-              ),
-            ],
+                  child: const Text("Add Transaction"),
+                  onPressed: _submitData,
+                  style: TextButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    primary: Colors.white,
+                  )),
+            ]),
           ),
-          TextButton(
-              child: const Text("Add Transaction"),
-              onPressed: _submitData,
-              style: TextButton.styleFrom(
-                backgroundColor: Theme.of(context).primaryColor,
-                primary: Colors.white,
-              )),
-        ]),
+        ),
       ),
     );
   }
