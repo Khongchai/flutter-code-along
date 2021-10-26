@@ -1,6 +1,6 @@
+import 'package:expense/components/transaction_item.dart';
 import 'package:expense/types/transaction.dart';
 import "package:flutter/material.dart";
-import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> userTransactions;
@@ -15,61 +15,38 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: userTransactions.isEmpty
-          ? SizedBox(
-              width: 1 / 0,
-              child: SingleChildScrollView(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "No transactions added yet",
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                          height: 200,
-                          child: Image.asset("assets/images/waiting.png",
-                              fit: BoxFit.cover)),
-                    ]),
-              ),
-            )
-          : ListView.builder(
-              itemBuilder: (ctx, i) {
-                return Card(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 5,
-                  ),
-                  elevation: 5,
-                  child: (ListTile(
-                    leading: CircleAvatar(
-                        radius: 30,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: FittedBox(
-                              child: Text("\$${userTransactions[i].amount}")),
-                        )),
-                    title: Text(userTransactions[i].title,
-                        style: Theme.of(context).textTheme.headline6),
-                    subtitle:
-                        Text(DateFormat.yMd().format(userTransactions[i].date)),
-                    trailing: MediaQuery.of(context).size.width > 400
-                        ? FlatButton.icon(
-                            onPressed: () =>
-                                removeItemFromList(userTransactions[i]),
-                            icon: const Icon(Icons.delete),
-                            textColor: Colors.red,
-                            label: const Text("Delete"))
-                        : IconButton(
-                            icon: const Icon(Icons.delete),
-                            color: Colors.red,
-                            onPressed: () =>
-                                removeItemFromList(userTransactions[i]),
-                          ),
-                  )),
-                );
-                /*(
+        child: userTransactions.isEmpty
+            ? SizedBox(
+                width: 1 / 0,
+                child: SingleChildScrollView(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "No transactions added yet",
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                            height: 200,
+                            child: Image.asset("assets/images/waiting.png",
+                                fit: BoxFit.cover)),
+                      ]),
+                ),
+              )
+            : ListView(
+                children: userTransactions
+                    .map((userTransaction) => TransactionItem(
+                          key: ValueKey(userTransaction.id),
+                          deleteAction: () =>
+                              removeItemFromList(userTransaction),
+                          userTransaction: userTransaction,
+                        ))
+                    .toList()));
+  }
+}
+
+/*(
                     Card(
                   child: Row(children: [
                     Container(
@@ -100,10 +77,11 @@ class TransactionList extends StatelessWidget {
                                   color: Colors.grey)),
                         ])
                   ]),
-                ));*/
+                ));
               },
               itemCount: userTransactions.length,
             ),
     );
   }
 }
+*/
