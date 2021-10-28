@@ -28,6 +28,7 @@ class CategoryMealsPage extends StatelessWidget {
       body: ListView.builder(
         itemCount: categoryMeals.length,
         itemBuilder: (ctx, i) => MealItem(
+            mealId: categoryMeals[i].id,
             title: categoryMeals[i].title,
             imageUrl: categoryMeals[i].imageUrl,
             duration: categoryMeals[i].duration,
