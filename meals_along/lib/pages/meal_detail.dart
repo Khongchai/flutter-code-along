@@ -7,7 +7,10 @@ import 'package:meals/dummy_data.dart';
 import "../components/shared/textcard.dart";
 
 class MealDetail extends StatelessWidget {
-  const MealDetail({Key? key}) : super(key: key);
+  final Function(int mealId) addMealToFavorite;
+
+  const MealDetail({Key? key, required this.addMealToFavorite})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
